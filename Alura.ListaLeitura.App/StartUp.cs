@@ -2,6 +2,9 @@
 {
     public class StartUp
     {
-        
+        public void Configure()
+        {
+            
+        }
     }
 }
