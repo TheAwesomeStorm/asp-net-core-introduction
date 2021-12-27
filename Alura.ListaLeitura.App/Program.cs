@@ -7,15 +7,19 @@ namespace Alura.ListaLeitura.App
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var _repo = new LivroRepositorioCSV();
+            var repo = new LivroRepositorioCSV();
 
-            IWebHost host;
+            IWebHost host = new WebHostBuilder()
+                .UseKestrel()
+                .UseStartup<StartUp>()
+                .Build();
+            host.Run();
 
-            ImprimeLista(_repo.ParaLer);
-            ImprimeLista(_repo.Lendo);
-            ImprimeLista(_repo.Lidos);
+            ImprimeLista(repo.ParaLer);
+            ImprimeLista(repo.Lendo);
+            ImprimeLista(repo.Lidos);
         }
 
         static void ImprimeLista(ListaDeLeitura lista)
