@@ -8,27 +8,50 @@ namespace Alura.ListaLeitura.App
 {
     public class Startup
     {
+        private readonly LivroRepositorioCSV _repositorioCsv;
+
+        public Startup()
+        {
+            _repositorioCsv = new LivroRepositorioCSV();
+        }
+
         public void Configure(IApplicationBuilder app)
         {
             app.Run(Roteamento);
         }
 
-        private static Task Roteamento(HttpContext context)
+        private Task Roteamento(HttpContext context)
         {
-            var repo = new LivroRepositorioCSV();
-            var caminhosAtendidos = new Dictionary<string, string>
+            var caminhosAtendidos = new Dictionary<string, RequestDelegate>
             {
-                { "/livros/ler", repo.ParaLer.ToString() },
-                { "/livros/lendo", repo.Lendo.ToString() },
-                { "/livros/lidos", repo.Lidos.ToString() }
+                { "/livros/ler", LivrosParaLer },
+                { "/livros/lendo", LivrosLendo },
+                { "/livros/lidos", LivrosLidos }
             };
             
             if (caminhosAtendidos.ContainsKey(context.Request.Path))
             {
-                return context.Response.WriteAsync(caminhosAtendidos[context.Request.Path]);
+                var metodo = caminhosAtendidos[context.Request.Path];
+                return metodo.Invoke(context);
             }
-            
+
+            context.Response.StatusCode = 404;
             return context.Response.WriteAsync("Caminho inexistente");
+        }
+
+        private Task LivrosParaLer(HttpContext context)
+        {
+            return context.Response.WriteAsync(_repositorioCsv.ParaLer.ToString());
+        }
+
+        private Task LivrosLendo(HttpContext context)
+        {
+            return context.Response.WriteAsync(_repositorioCsv.Lendo.ToString());
+        }
+
+        private Task LivrosLidos(HttpContext context)
+        {
+            return context.Response.WriteAsync(_repositorioCsv.Lidos.ToString());
         }
     }
 }
