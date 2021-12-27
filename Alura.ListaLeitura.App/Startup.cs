@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Alura.ListaLeitura.App.Repositorio;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Alura.ListaLeitura.App
 {
@@ -15,9 +17,22 @@ namespace Alura.ListaLeitura.App
             _repositorioCsv = new LivroRepositorioCSV();
         }
 
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRouting();
+        }
+
         public void Configure(IApplicationBuilder app)
         {
-            app.Run(Roteamento);
+            var builder = new RouteBuilder(app);
+            builder.MapRoute("livros/ler", LivrosParaLer);
+            builder.MapRoute("livros/lendo", LivrosLendo);
+            builder.MapRoute("livros/lidos", LivrosLidos);
+
+            var routes = builder.Build();
+            
+            // app.Run(Roteamento);
+            app.UseRouter(routes);
         }
 
         private Task Roteamento(HttpContext context)
