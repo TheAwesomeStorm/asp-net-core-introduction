@@ -9,7 +9,7 @@ namespace Alura.ListaLeitura.App
     {
         public static void Main(string[] args)
         {
-            var repo = new LivroRepositorioCSV();
+            var repo = new LivroRepositorioCsv();
 
             IWebHost host = new WebHostBuilder()
                 .UseKestrel()

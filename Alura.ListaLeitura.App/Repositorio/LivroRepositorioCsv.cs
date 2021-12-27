@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Alura.ListaLeitura.App.Negocio;
 using System.IO;
 using System.Linq;
 
 namespace Alura.ListaLeitura.App.Repositorio
 {
-    public class LivroRepositorioCSV : ILivroRepositorio
+    public class LivroRepositorioCsv : ILivroRepositorio
     {
         private static readonly string nomeArquivoCSV = "Repositorio\\livros.csv";
 
@@ -15,13 +14,25 @@ namespace Alura.ListaLeitura.App.Repositorio
         private ListaDeLeitura _lendo;
         private ListaDeLeitura _lidos;
 
-        public LivroRepositorioCSV()
-        {
-            var arrayParaLer = new List<Livro>();
-            var arrayLendo = new List<Livro>();
-            var arrayLidos = new List<Livro>();
+        private List<Livro> _arrayParaLer;
+        private List<Livro> _arrayLendo;
+        private List<Livro> _arrayLidos;
 
-            using (var file = File.OpenText(LivroRepositorioCSV.nomeArquivoCSV))
+        public LivroRepositorioCsv()
+        {
+            _arrayParaLer = new List<Livro>();
+            _arrayLendo = new List<Livro>();
+            _arrayLidos = new List<Livro>();
+            UpdateCsv();
+        }
+
+        private void UpdateCsv()
+        {
+            _arrayParaLer.Clear();
+            _arrayLendo.Clear();
+            _arrayLidos.Clear();
+            
+            using (var file = File.OpenText(LivroRepositorioCsv.nomeArquivoCSV))
             {
                 while (!file.EndOfStream)
                 {
@@ -40,23 +51,21 @@ namespace Alura.ListaLeitura.App.Repositorio
                     switch (infoLivro[0])
                     {
                         case "para-ler":
-                            arrayParaLer.Add(livro);
+                            _arrayParaLer.Add(livro);
                             break;
                         case "lendo":
-                            arrayLendo.Add(livro);
+                            _arrayLendo.Add(livro);
                             break;
                         case "lidos":
-                            arrayLidos.Add(livro);
-                            break;
-                        default:
+                            _arrayLidos.Add(livro);
                             break;
                     }
                 }
             }
 
-            _paraLer = new ListaDeLeitura("Para Ler", arrayParaLer.ToArray());
-            _lendo = new ListaDeLeitura("Lendo", arrayLendo.ToArray());
-            _lidos = new ListaDeLeitura("Lidos", arrayLidos.ToArray());
+            _paraLer = new ListaDeLeitura("Para Ler", _arrayParaLer.ToArray());
+            _lendo = new ListaDeLeitura("Lendo", _arrayLendo.ToArray());
+            _lidos = new ListaDeLeitura("Lidos", _arrayLidos.ToArray());
         }
 
         public ListaDeLeitura ParaLer => _paraLer;
@@ -68,10 +77,11 @@ namespace Alura.ListaLeitura.App.Repositorio
         public void Incluir(Livro livro)
         {
             var id = Todos.Select(l => l.Id).Max();
-            using (var file = File.AppendText(LivroRepositorioCSV.nomeArquivoCSV))
+            using (var file = File.AppendText(LivroRepositorioCsv.nomeArquivoCSV))
             {
                 file.WriteLine($"para-ler;{id+1};{livro.Titulo};{livro.Autor}");
             }
+            UpdateCsv();
         }
     }
 }
