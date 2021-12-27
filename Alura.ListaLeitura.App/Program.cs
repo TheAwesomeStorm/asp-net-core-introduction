@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Alura.ListaLeitura.App
 {
-    class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -13,7 +13,7 @@ namespace Alura.ListaLeitura.App
 
             IWebHost host = new WebHostBuilder()
                 .UseKestrel()
-                .UseStartup<StartUp>()
+                .UseStartup<Startup>()
                 .Build();
             host.Run();
 
