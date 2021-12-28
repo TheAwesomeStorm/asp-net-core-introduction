@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Alura.ListaLeitura.App.Negocio;
 using Alura.ListaLeitura.App.Repositorio;
@@ -30,11 +31,51 @@ namespace Alura.ListaLeitura.App
             builder.MapRoute("livros/lendo", LivrosLendo);
             builder.MapRoute("livros/lidos", LivrosLidos);
             builder.MapRoute("cadastro/livro/{nome}/{autor}", NovoLivroParaLer);
+            builder.MapRoute("livros/detalhes/{id:int}", ExibeDetalhes);
+            builder.MapRoute("cadastro/novolivro", ExibeFormulario);
+            builder.MapRoute("cadastro/incluir", ProcessarFormulario);
 
             var routes = builder.Build();
             
             // app.Run(Roteamento);
             app.UseRouter(routes);
+        }
+
+        private Task ProcessarFormulario(HttpContext context)
+        {
+            var livro = new Livro()
+            {
+                Titulo = context.Request.Query["titulo"].First(),
+                Autor = context.Request.Query["autor"].First(),
+            };
+            _repositorioCsv.Incluir(livro);
+            return context.Response.WriteAsync("Livro adicionado a partir do formulário");
+        }
+
+        private Task ExibeFormulario(HttpContext context)
+        {
+            var html = @"
+                        <html>
+                            <form action='/cadastro/incluir' style='display: flex; flex-direction: column; align-items: center; width: 300px; margin: 0 auto;'>
+                                <div style='margin-bottom: 8px;'>
+                                    <label for='titulo'>Livro: </label>
+                                    <input name='titulo' placeholder='Title' />
+                                </div>
+                                <div style='margin-bottom: 8px;'>
+                                    <label for='autor'>Autor: </label>
+                                    <input name='autor' placeholder='Author' />
+                                </div>
+                                <button style='width: 100px;'>Salvar</button>
+                            </form>
+                        </html>";
+            return context.Response.WriteAsync(html);
+        }
+
+        private Task ExibeDetalhes(HttpContext context)
+        {
+            var id = Convert.ToInt32(context.GetRouteValue("id"));
+            var livro = _repositorioCsv.Todos.First(l => l.Id == id);
+            return context.Response.WriteAsync(livro.Detalhes());
         }
 
         private Task NovoLivroParaLer(HttpContext context)
