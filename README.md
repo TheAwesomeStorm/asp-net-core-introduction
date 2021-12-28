@@ -4,7 +4,7 @@ Asp.NET Core Introduction
 Package Dependencies
 --------------------
 
-Microsoft.AspNetCore/2.0.1
+Microsoft.AspNetCore/2.0.1  
 Microsoft.AspNetCore.Mvc/2.0.2
 
 About
