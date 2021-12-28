@@ -68,9 +68,32 @@ namespace Alura.ListaLeitura.App.Repositorio
             _lidos = new ListaDeLeitura("Lidos", _arrayLidos.ToArray());
         }
 
-        public ListaDeLeitura ParaLer => _paraLer;
-        public ListaDeLeitura Lendo => _lendo;
-        public ListaDeLeitura Lidos => _lidos;
+        public ListaDeLeitura ParaLer
+        {
+            get
+            {
+                UpdateCsv();
+                return _paraLer;
+            }
+        }
+
+        public ListaDeLeitura Lendo
+        {
+            get
+            {
+                UpdateCsv();
+                return _lendo;
+            }
+        }
+
+        public ListaDeLeitura Lidos
+        {
+            get
+            {
+                UpdateCsv();
+                return _lidos;
+            }
+        }
 
         public IEnumerable<Livro> Todos => _paraLer.Livros.Union(_lendo.Livros).Union(_lidos.Livros);
 
