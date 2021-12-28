@@ -1,14 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
+﻿using System.Linq;
 using Alura.ListaLeitura.App.Repositorio;
-using static Alura.ListaLeitura.App.View.HtmlLoader;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Alura.ListaLeitura.App.Controller
 {
-    public class LivrosController
+    public class LivrosController : Microsoft.AspNetCore.Mvc.Controller
     {
         private static LivroRepositorioCsv _repositorioCsv;
 
@@ -17,41 +13,28 @@ namespace Alura.ListaLeitura.App.Controller
             _repositorioCsv = new LivroRepositorioCsv();
         }
 
-        public static Task Detalhes(HttpContext context)
+        public string Detalhes(int id)
         {
-            var id = Convert.ToInt32(context.GetRouteValue("id"));
             var livro = _repositorioCsv.Todos.First(l => l.Id == id);
-            return context.Response.WriteAsync(livro.Detalhes());
+            return livro.Detalhes();
         }
 
-        public static Task ParaLer(HttpContext context)
+        public IActionResult ParaLer()
         {
-            var html = CarregarArquivoHtml("para-ler");
-
-            foreach (var livro in _repositorioCsv.ParaLer.Livros)
-            {
-                html = html
-                    .Replace("#NOVO-ITEM#", $"<li>{livro.Titulo} - {livro.Autor}</li>#NOVO-ITEM#");
-            }
-
-            html = html.Replace("#NOVO-ITEM#", "");
-            
-            return context.Response.WriteAsync(html);
+            ViewBag.Livros = _repositorioCsv.ParaLer.Livros;
+            return View("lista");
         }
 
-        public static Task Lendo(HttpContext context)
+        public IActionResult Lendo()
         {
-            return context.Response.WriteAsync(_repositorioCsv.Lendo.ToString());
+            ViewBag.Livros = _repositorioCsv.Lendo.Livros;
+            return View("lista");
         }
 
-        public static Task Lidos(HttpContext context)
+        public IActionResult Lidos()
         {
-            return context.Response.WriteAsync(_repositorioCsv.Lidos.ToString());
-        }
-
-        public string Teste()
-        {
-            return "Teste";
+            ViewBag.Livros = _repositorioCsv.Lidos.Livros;
+            return View("lista");
         }
     }
 }

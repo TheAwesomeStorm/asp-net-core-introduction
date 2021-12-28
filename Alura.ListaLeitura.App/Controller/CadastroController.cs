@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Alura.ListaLeitura.App.Negocio;
+﻿using Alura.ListaLeitura.App.Negocio;
 using Alura.ListaLeitura.App.Repositorio;
-using static Alura.ListaLeitura.App.View.HtmlLoader;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Alura.ListaLeitura.App.Controller
 {
-    public static class CadastroController
+    public class CadastroController
     {
         private static LivroRepositorioCsv _repositorioCsv;
 
@@ -18,32 +13,18 @@ namespace Alura.ListaLeitura.App.Controller
             _repositorioCsv = new LivroRepositorioCsv();
         }
         
-        public static Task ProcessarFormulario(HttpContext context)
+        public string IncluirLivro(Livro livro)
         {
-            var livro = new Livro()
-            {
-                Titulo = context.Request.Form["titulo"].First(),
-                Autor = context.Request.Form["autor"].First(),
-            };
             _repositorioCsv.Incluir(livro);
-            return context.Response.WriteAsync("Livro adicionado a partir do formulário");
+            return "Livro adicionado a partir do formulário";
         }
 
-        public static Task ExibirFormulario(HttpContext context)
+        public IActionResult NovoLivro()
         {
-            var html = CarregarArquivoHtml("formulario");
-            return context.Response.WriteAsync(html);
-        }
-        
-        public static Task NovoLivro(HttpContext context)
-        {
-            var livro = new Livro()
+            return new ViewResult()
             {
-                Titulo = Convert.ToString(context.GetRouteValue("nome")),
-                Autor = Convert.ToString(context.GetRouteValue("autor"))
+                ViewName = "formulario"
             };
-            _repositorioCsv.Incluir(livro);
-            return context.Response.WriteAsync("Novo livro adicionado com sucesso");
         }
     }
 }
