@@ -85,27 +85,6 @@ namespace Alura.ListaLeitura.App
             _repositorioCsv.Incluir(livro);
             return context.Response.WriteAsync("Novo livro adicionado com sucesso");
         }
-        
-        /*
-        private Task Roteamento(HttpContext context)
-        {
-            var caminhosAtendidos = new Dictionary<string, RequestDelegate>
-            {
-                { "/livros/ler", LivrosParaLer },
-                { "/livros/lendo", LivrosLendo },
-                { "/livros/lidos", LivrosLidos }
-            };
-            
-            if (caminhosAtendidos.ContainsKey(context.Request.Path))
-            {
-                var metodo = caminhosAtendidos[context.Request.Path];
-                return metodo.Invoke(context);
-            }
-
-            context.Response.StatusCode = 404;
-            return context.Response.WriteAsync("Caminho inexistente");
-        }
-        */
 
         private Task LivrosParaLer(HttpContext context)
         {
