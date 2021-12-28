@@ -7,7 +7,7 @@ using Alura.ListaLeitura.App.Negocio;
 using Alura.ListaLeitura.App.Repositorio;
 using static Alura.ListaLeitura.App.HTML.HtmlLoader;
 
-namespace Alura.ListaLeitura.App
+namespace Alura.ListaLeitura.App.Delegates
 {
     public static class RouteDelegates
     {

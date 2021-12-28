@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using static Alura.ListaLeitura.App.RouteDelegates;
+using static Alura.ListaLeitura.App.Delegates.RouteDelegates;
 
 namespace Alura.ListaLeitura.App
 {
@@ -25,7 +25,6 @@ namespace Alura.ListaLeitura.App
 
             var routes = builder.Build();
             
-            // app.Run(Roteamento);
             app.UseRouter(routes);
         }
     }
