@@ -46,8 +46,8 @@ namespace Alura.ListaLeitura.App
         {
             var livro = new Livro()
             {
-                Titulo = context.Request.Query["titulo"].First(),
-                Autor = context.Request.Query["autor"].First(),
+                Titulo = context.Request.Form["titulo"].First(),
+                Autor = context.Request.Form["autor"].First(),
             };
             _repositorioCsv.Incluir(livro);
             return context.Response.WriteAsync("Livro adicionado a partir do formulário");

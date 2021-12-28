@@ -5,7 +5,11 @@
     <title>Cadastro - Novo Livro</title>
 </head>
 <body>
-    <form action='/cadastro/incluir' style='display: flex; flex-direction: column; align-items: center; width: 300px; margin: 0 auto;'>
+    <form
+            method="post"
+            action='/cadastro/incluir'
+            style='display: flex; flex-direction: column; align-items: center; width: 300px; margin: 0 auto;'
+    >
         <div style='margin-bottom: 8px;'>
             <label for='titulo'>Livro: </label>
             <input name='titulo' id="titulo" placeholder='Title' />
