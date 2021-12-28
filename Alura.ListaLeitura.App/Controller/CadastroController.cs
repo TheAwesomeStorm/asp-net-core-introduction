@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Alura.ListaLeitura.App.Negocio;
 using Alura.ListaLeitura.App.Repositorio;
-using static Alura.ListaLeitura.App.HTML.HtmlLoader;
+using static Alura.ListaLeitura.App.View.HtmlLoader;
 
-namespace Alura.ListaLeitura.App.Delegates
+namespace Alura.ListaLeitura.App.Controller
 {
     public static class CadastroController
     {
@@ -29,13 +29,13 @@ namespace Alura.ListaLeitura.App.Delegates
             return context.Response.WriteAsync("Livro adicionado a partir do formulário");
         }
 
-        public static Task ExibeFormulario(HttpContext context)
+        public static Task ExibirFormulario(HttpContext context)
         {
             var html = CarregarArquivoHtml("formulario");
             return context.Response.WriteAsync(html);
         }
         
-        public static Task NovoLivroParaLer(HttpContext context)
+        public static Task NovoLivro(HttpContext context)
         {
             var livro = new Livro()
             {

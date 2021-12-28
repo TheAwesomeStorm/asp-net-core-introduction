@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Alura.ListaLeitura.App.Repositorio;
-using static Alura.ListaLeitura.App.HTML.HtmlLoader;
+using static Alura.ListaLeitura.App.View.HtmlLoader;
 
-namespace Alura.ListaLeitura.App.Delegates
+namespace Alura.ListaLeitura.App.Controller
 {
     public static class LivrosController
     {
@@ -17,14 +17,14 @@ namespace Alura.ListaLeitura.App.Delegates
             _repositorioCsv = new LivroRepositorioCsv();
         }
 
-        public static Task LivrosDetalhes(HttpContext context)
+        public static Task Detalhes(HttpContext context)
         {
             var id = Convert.ToInt32(context.GetRouteValue("id"));
             var livro = _repositorioCsv.Todos.First(l => l.Id == id);
             return context.Response.WriteAsync(livro.Detalhes());
         }
 
-        public static Task LivrosParaLer(HttpContext context)
+        public static Task ParaLer(HttpContext context)
         {
             var html = CarregarArquivoHtml("para-ler");
 
@@ -39,12 +39,12 @@ namespace Alura.ListaLeitura.App.Delegates
             return context.Response.WriteAsync(html);
         }
 
-        public static Task LivrosLendo(HttpContext context)
+        public static Task Lendo(HttpContext context)
         {
             return context.Response.WriteAsync(_repositorioCsv.Lendo.ToString());
         }
 
-        public static Task LivrosLidos(HttpContext context)
+        public static Task Lidos(HttpContext context)
         {
             return context.Response.WriteAsync(_repositorioCsv.Lidos.ToString());
         }

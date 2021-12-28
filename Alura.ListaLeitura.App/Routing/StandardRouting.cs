@@ -11,12 +11,13 @@ namespace Alura.ListaLeitura.App.Routing
     {
         public static Task DefaultHandler(HttpContext context)
         {
-            var className = Convert.ToString(context.GetRouteValue("classe"));
-            var methodName = Convert.ToString(context.GetRouteValue("metodo"));
+            var className = Convert.ToString(context.GetRouteValue("class"));
+            var methodName = Convert.ToString(context.GetRouteValue("method"));
 
             var nameWithNamespace = $"Alura.ListaLeitura.App.Controller.{className}Controller";
-            
-            var method = Type.GetType(nameWithNamespace).GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+
+            var tipo = Type.GetType(nameWithNamespace);
+            var method = tipo.GetMethods().Where(m => m.Name == methodName).First();
             var requestDelegate = (RequestDelegate)Delegate.CreateDelegate(typeof(RequestDelegate), method);
 
             return requestDelegate.Invoke(context);

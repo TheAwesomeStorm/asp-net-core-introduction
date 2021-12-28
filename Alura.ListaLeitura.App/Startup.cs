@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using static Alura.ListaLeitura.App.Delegates.LivrosController;
-using static Alura.ListaLeitura.App.Delegates.CadastroController;
+using static Alura.ListaLeitura.App.Controller.LivrosController;
+using static Alura.ListaLeitura.App.Controller.CadastroController;
 
 namespace Alura.ListaLeitura.App
 {
@@ -16,13 +16,13 @@ namespace Alura.ListaLeitura.App
         public void Configure(IApplicationBuilder app)
         {
             var builder = new RouteBuilder(app);
-            builder.MapRoute("livros/paraler", LivrosParaLer);
-            builder.MapRoute("livros/lendo", LivrosLendo);
-            builder.MapRoute("livros/lidos", LivrosLidos);
-            builder.MapRoute("livros/detalhes/{id:int}", LivrosDetalhes);
-            builder.MapRoute("cadastro/livro/{nome}/{autor}", NovoLivroParaLer);
-            builder.MapRoute("cadastro/novolivro", ExibeFormulario);
-            builder.MapRoute("cadastro/incluir", ProcessarFormulario);
+            builder.MapRoute("Livros/ParaLer", ParaLer);
+            builder.MapRoute("Livros/Lendo", Lendo);
+            builder.MapRoute("Livros/Lidos", Lidos);
+            builder.MapRoute("Livros/Detalhes/{id:int}", Detalhes);
+            builder.MapRoute("Cadastro/NovoLivro/{nome}/{autor}", NovoLivro);
+            builder.MapRoute("Cadastro/ExibirFormulario", ExibirFormulario);
+            builder.MapRoute("Cadastro/ProcessarFormulario", ProcessarFormulario);
 
             var routes = builder.Build();
             
