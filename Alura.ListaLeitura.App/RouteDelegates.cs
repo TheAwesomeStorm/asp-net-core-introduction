@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Alura.ListaLeitura.App.Negocio;
-using Alura.ListaLeitura.App.Repositorio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Alura.ListaLeitura.App.Negocio;
+using Alura.ListaLeitura.App.Repositorio;
+using static Alura.ListaLeitura.App.HTML.HtmlLoader;
 
 namespace Alura.ListaLeitura.App
 {
@@ -16,15 +16,6 @@ namespace Alura.ListaLeitura.App
         static RouteDelegates()
         {
             _repositorioCsv = new LivroRepositorioCsv();
-        }
-
-        private static string CarregarArquivoHtml(string fileName)
-        {
-            var filePath = $"HTML/{fileName}.html";
-            using (var arquivo = File.OpenText(filePath))
-            {
-                return arquivo.ReadToEnd();
-            }
         }
 
         public static Task ProcessarFormulario(HttpContext context)
