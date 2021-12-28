@@ -8,7 +8,7 @@ using static Alura.ListaLeitura.App.View.HtmlLoader;
 
 namespace Alura.ListaLeitura.App.Controller
 {
-    public static class LivrosController
+    public class LivrosController
     {
         private static LivroRepositorioCsv _repositorioCsv;
 
@@ -47,6 +47,11 @@ namespace Alura.ListaLeitura.App.Controller
         public static Task Lidos(HttpContext context)
         {
             return context.Response.WriteAsync(_repositorioCsv.Lidos.ToString());
+        }
+
+        public string Teste()
+        {
+            return "Teste";
         }
     }
 }
