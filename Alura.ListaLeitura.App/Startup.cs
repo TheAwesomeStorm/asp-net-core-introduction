@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Alura.ListaLeitura.App.Negocio;
@@ -54,21 +55,17 @@ namespace Alura.ListaLeitura.App
 
         private Task ExibeFormulario(HttpContext context)
         {
-            var html = @"
-                        <html>
-                            <form action='/cadastro/incluir' style='display: flex; flex-direction: column; align-items: center; width: 300px; margin: 0 auto;'>
-                                <div style='margin-bottom: 8px;'>
-                                    <label for='titulo'>Livro: </label>
-                                    <input name='titulo' placeholder='Title' />
-                                </div>
-                                <div style='margin-bottom: 8px;'>
-                                    <label for='autor'>Autor: </label>
-                                    <input name='autor' placeholder='Author' />
-                                </div>
-                                <button style='width: 100px;'>Salvar</button>
-                            </form>
-                        </html>";
+            var html = CarregarArquivoHTML("formulario");
             return context.Response.WriteAsync(html);
+        }
+
+        private string CarregarArquivoHTML(string fileName)
+        {
+            var filePath = $"HTML/{fileName}.html";
+            using (var arquivo = File.OpenText(filePath))
+            {
+                return arquivo.ReadToEnd();
+            }
         }
 
         private Task ExibeDetalhes(HttpContext context)
